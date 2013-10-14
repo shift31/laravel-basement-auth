@@ -2,7 +2,7 @@
 
 use Illuminate\Auth;
 use Hash;
-use Basement;
+use Cb;
 
 /**
  * Class to build array to send to GenericUser
@@ -20,7 +20,7 @@ class BasementAuthUserProvider implements Auth\UserProviderInterface
      */
     public function retrieveByID($identifier)
     {
-        $options['doc'] = Basement::findByKey($identifier, array('first' => true))->doc();
+        $options['doc'] = Cb::findByKey($identifier, array('first' => true))->doc();
         return new BasementUser($options);
     }
 
@@ -37,7 +37,7 @@ class BasementAuthUserProvider implements Auth\UserProviderInterface
             'include_docs' => 'true',
             'key' => $credentials['username']
         );
-        $documents = Basement::findByView('user', 'byUsername', $arrayQuery)->get();
+        $documents = Cb::findByView('user', 'byUsername', $arrayQuery)->get();
 
         $options['doc'] = $documents[0]->doc();
         return new BasementUser($options);
